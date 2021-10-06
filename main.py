@@ -269,7 +269,7 @@ async def time(ctx, arg, unit = 'min'):
 @client.command(pass_context = True)
 async def help(ctx, cmd = None):
 
-    if cmd == None:
+    if cmd == None:           #This is where i wish python had a switch statement 
 
         embed = discord.Embed(colour = discord.Colour.red())
 
