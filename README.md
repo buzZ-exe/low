@@ -9,3 +9,5 @@ I wrote a lot of this as practice when I was learning discord.py
 
 There are still a lot of useless files keep_alive.py which is a rememnant of me trying to host the bot so it runs 24/7 and response_lists.py which was used before I knew about json or APIs.
 But the point of this is to give a template for building a discord bot so I'm not too worried about it right now. I might fix these issues later.
+
+Link to add bot: https://discordapp.com/oauth2/authorize?client_id=730435329420689428&scope=bot
