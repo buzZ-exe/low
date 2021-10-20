@@ -9,6 +9,7 @@ from discord.ext.commands import Bot
 
 #For bot functions
 import random, asyncio, config
+from datetime import datetime
 
 global status_state                 #Unused variable for future commands - Don't delete       
 status_state = 'with Humans'        #Probably never gonna use
@@ -121,13 +122,6 @@ async def Face(ctx):
                 breif = "Sends the link you need to add this bot.")
 async def Add(ctx):
     response = 'https://discordapp.com/oauth2/authorize?client_id=730435329420689428&scope=bot'
-    await ctx.send(response)
-
-@client.command(aliases = ['me'],
-                description = 'Presenst yourself in the third person',
-                brief = 'Refers to you in the third person')
-async def Me(ctx, *,  arg):
-    response = ">>> " + ctx.message.author.mention + " " + arg
     await ctx.send(response)
 
 @client.command(aliases = ['poll', 'vote'],
@@ -265,6 +259,35 @@ async def time(ctx, arg, unit = 'min'):
         hours = float(arg)*3600
         await ctx.send(arg + ' hours is ' + str(hours) + 'seconds.')
 
+@client.command(pass_context = True)
+async def reaction(ctx):
+
+    def check(msg):                         #To check whether the person who called the function is the one being counted
+        return msg.author == ctx.author and msg.channel == ctx.channel
+
+    embed1 = discord.Embed(colour = discord.Colour.red())
+    embed1.add_field(name = 'Reaction Test', value = 'When this turns green enter any message :red_circle:')
+
+    embed2 = discord.Embed(colour = discord.Colour.red())
+    embed2.add_field(name = 'Reaction Test', value = 'Enter any message NOW :green_circle:')
+
+    message = await ctx.send(embed = embed1)
+    await asyncio.sleep(random.randint(2,5))
+    await message.edit(embed = embed2)
+    
+    try:
+        reactionStart = datetime.now()
+        await client.wait_for("message", check=check,  timeout=5.0)
+        reactionEnd = datetime.now()
+        reactionTime = reactionEnd - reactionStart
+
+        embed3 = discord.Embed(colour = discord.Colour.red())
+        embed3.add_field(name = 'Reaction Test', value = 'Your reaction time was ' + str(reactionTime)[6] + 's ' + str(reactionTime)[8:11] + 'ms')
+        print(reactionTime)
+        embed3.set_footer(text = "PS. This is inaccurate af cuz of the latency")
+        await message.edit(embed = embed3)
+    except asyncio.TimeoutError:
+        await ctx.send("You took too long...")
 
 @client.command(pass_context = True)
 async def help(ctx, cmd = None):
@@ -277,7 +300,7 @@ async def help(ctx, cmd = None):
         embed.add_field(name = ':+1: Add', value = 'Sends the link you need to add this bot.', inline = True)
         embed.add_field(name = ':face_with_raised_eyebrow: Face', value = 'Sends a face ( ͡° ͜ʖ ͡°)', inline = True)
         embed.add_field(name = ':arrows_counterclockwise: Flip', value = 'Flips a coin.', inline = True)
-        embed.add_field(name = ':point_right: Me', value = 'Refers to you in third person.', inline = True)
+        embed.add_field(name = ':point_right: Reaction', value = 'Measures your reaction time', inline = True)
         embed.add_field(name = ':speech_balloon: Quote', value = 'Sends a random quote from online', inline = True)
         embed.add_field(name = ':game_die: Random', value = 'Random number generator', inline = True)
         embed.add_field(name = ':upside_down: Guess', value = 'Play a guess the number game.', inline = True)
@@ -287,19 +310,13 @@ async def help(ctx, cmd = None):
         embed.add_field(name = ':laughing: Meme', value = 'Posts a random meme from r/memes', inline = True)
         embed.add_field(name = ':rofl: Dank Meme', value = 'Posts a random meme from r/dankmemes', inline = True)
         embed.set_footer(text = 'Type !help [command] for more info')
+
     elif cmd.lower() == 'add':
 
         embed = discord.Embed(colour = discord.Colour.red())
         embed.set_author(name = 'Add')
         embed.add_field(name = '='*36 + '\nSyntax:- !add (lmao what did you expect?)\n'+ '='*36,
                         value = 'Gives the link you need to add this bot to a server.')
-
-    elif cmd.lower() == 'code':
-
-        embed = discord.Embed(colour = discord.Colour.red())
-        embed.set_author(name = 'Code')
-        embed.add_field(name = '='*36 + '\n!code [Programming language] [code]\n' + '='*36,
-                        value = 'Formats the code text in a box along with markdown text and keyword highlighting.')
 
     elif cmd.lower() == 'face':
         
@@ -315,26 +332,19 @@ async def help(ctx, cmd = None):
         embed.add_field(name = '='*36 + '\n!flip\n' + '='*36,
                         value = 'Flips a coin, simple as that')
 
-    elif cmd.lower() == 'me':
+    elif cmd.lower() == 'reaction':
 
         embed = discord.Embed(colour = discord.Colour.red())
-        embed.set_author(name = 'Me')
-        embed.add_field(name = '='*36 + '\n!me [text]\n' + '='*36,
-                        value = "Refers to you in third person, so '!me snaps' will become 'Thanos snaps")
+        embed.set_author(name = 'Reaction')
+        embed.add_field(name = '='*36 + '\n!reaction\n' + '='*36,
+                        value = "Measures your reaction time(highly inaccurate)")
 
     elif cmd.lower() == 'quote':
 
         embed = discord.Embed(colour = discord.Colour.red())
         embed.set_author(name = 'Quote')
         embed.add_field(name = '='*36 + '\n!quote [text]\n' + '='*36,
-                        value = 'Quotes the given text in a box')
-
-    elif cmd.lower() == 'pre':
-
-        embed = discord.Embed(colour = discord.Colour.red())
-        embed.set_author(name = 'Pre')
-        embed.add_field(name = '='*36 + '\n!pre [text]\n' + '='*36, 
-                        value = 'Preserves whitespace and sends the text with a primitive font.')
+                        value = 'Gives a random quote from the internet.')
 
     elif cmd.lower() == 'random':
 
@@ -343,18 +353,11 @@ async def help(ctx, cmd = None):
         embed.add_field(name = '='*36 + '\n!random [number]\n' + '='*36,
                         value = 'Sends a random number from between 1 and the number that you give.')
 
-    elif cmd.lower() == 'say':
-
-        embed = discord.Embed(colour = discord.Colour.red())
-        embed.set_author(name = 'Say')
-        embed.add_field(name = '='*36 + '\n!say [text]\n' + '='*36,
-                        value = 'Well...it makes me say what you want me to say.')
-
     elif cmd.lower() == 'help':
 
         embed = discord.Embed(colour = discord.Colour.red())            
-        embed.set_author(name = "Why you gotta be THAT guy, huh?")
-        embed.add_field(name = 'Walk on home boy.', value = '*snaps*')
+        embed.set_author(name = "I see you're the sigma male of the group")
+        embed.add_field(name = 'Congrats.', value = '*claps*')
 
     elif cmd.lower() == 'guess':
 
