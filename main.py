@@ -283,7 +283,6 @@ async def reaction(ctx):
 
         embed3 = discord.Embed(colour = discord.Colour.red())
         embed3.add_field(name = 'Reaction Test', value = 'Your reaction time was ' + str(reactionTime)[6] + 's ' + str(reactionTime)[8:11] + 'ms')
-        print(reactionTime)
         embed3.set_footer(text = "PS. This is inaccurate af cuz of the latency")
         await message.edit(embed = embed3)
     except asyncio.TimeoutError:
