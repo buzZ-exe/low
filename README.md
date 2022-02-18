@@ -13,10 +13,4 @@ But the point of this is to give a template for building a discord bot so I'm no
 It uses the prefix '!' but it can easily be changed.
 
 ## Link to add bot
-<<<<<<< HEAD
 https://discordapp.com/oauth2/authorize?client_id=730435329420689428&scope=bot
-=======
-https://discordapp.com/oauth2/authorize?client_id=730435329420689428&scope=bot
-
-
->>>>>>> c039be4678078a752eab831c20d9648fb29800ea
