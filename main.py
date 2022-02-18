@@ -18,4 +18,3 @@ client.load_extension("cogs.listeners")
 client.load_extension("cogs.helpCommand")
 
 client.run(config.token)
-
