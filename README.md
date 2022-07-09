@@ -14,5 +14,3 @@ It uses the prefix '!' but this can easily be changed.
 
 ## Link to add bot
 https://discordapp.com/oauth2/authorize?client_id=730435329420689428&scope=bot
-
-adwyth was here.
